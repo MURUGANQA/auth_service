@@ -1,0 +1,44 @@
+Organization Table
+
+CREATE TABLE organization (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    status INTEGER DEFAULT 0 NOT NULL,
+    personal BOOLEAN DEFAULT FALSE,
+    settings JSON DEFAULT '{}' NULL,
+    created_at BIGINT NULL,
+    updated_at BIGINT NULL
+);
+
+User Table
+
+CREATE TABLE "user" (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    profile JSON DEFAULT '{}' NOT NULL,
+    status INTEGER DEFAULT 0 NOT NULL,
+    settings JSON DEFAULT '{}' NULL,
+    created_at BIGINT NULL,
+    updated_at BIGINT NULL
+);
+Role Table
+
+CREATE TABLE role (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    org_id INTEGER REFERENCES organization(id) ON DELETE CASCADE NOT NULL
+);
+Member Table
+
+CREATE TABLE member (
+    id SERIAL PRIMARY KEY,
+    org_id INTEGER REFERENCES organization(id) ON DELETE CASCADE NOT NULL,
+    user_id INTEGER REFERENCES "user"(id) ON DELETE CASCADE NOT NULL,
+    role_id INTEGER REFERENCES role(id) ON DELETE CASCADE NOT NULL,
+    status INTEGER DEFAULT 0 NOT NULL,
+    settings JSON DEFAULT '{}' NULL,
+    created_at BIGINT NULL,
+    updated_at BIGINT NULL
+);
